@@ -3,47 +3,47 @@ using Newtonsoft.Json;
 public class VocabularyItem
 {
     [JsonProperty("id")]
-    public int _id;
+    public int Id;
 
     [JsonProperty("word")]
-    public string _word;
+    public string Word;
 
     [JsonProperty("pronunciation")]
-    public string _pronunciation;
+    public string Pronunciation;
 
     [JsonProperty("game_pronunciation")]
-    public int _gamePronunciation;
+    public int HamePronunciation;
 
     [JsonProperty("game_meaning")]
-    public string _gameMeaning;
+    public string HameMeaning;
 
     [JsonProperty("meaning")]
-    public string _meaning;
+    public string Meaning;
 
     [JsonProperty("type")]
-    public string _type;
+    public string Type;
 
     [JsonProperty("explain")]
-    public string _explain;
+    public string Explain;
 
     [JsonProperty("example")]
-    public string _example;
+    public string Example;
 
     [JsonProperty("example_meaning")]
-    public string _exampleMeaning;
+    public string ExampleMeaning;
 
     [JsonProperty("audio")]
-    public string _audio;
+    public string Audio;
 
     [JsonProperty("full_meaning")]
-    public string _fullMeaning;
+    public string FullMeaning;
 
     [JsonProperty("category")]
-    public int _category;
+    public int Category;
 
     [JsonProperty("similar_pronunciation")]
-    public string _similarPronunciation;
+    public string SimilarPronunciation;
 
     [JsonProperty("game_write")]
-    public string _gameWrite;
+    public string GameWrite;
 }
