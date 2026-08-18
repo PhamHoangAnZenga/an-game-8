@@ -9,6 +9,7 @@ public class ButtonElement : MonoBehaviour
     [SerializeField] TextMeshProUGUI _explain;
     [SerializeField] TextMeshProUGUI _example;
     [SerializeField] TextMeshProUGUI _id;
+    string _audio;
 
     public void SetData(int id, VocabularyItem data)
     {
@@ -16,10 +17,18 @@ public class ButtonElement : MonoBehaviour
         _word.text = data.Word;
         _meaning.text = data.Meaning;
         _pronunciation.text = data.Pronunciation;
+
         if (data.Explain == null) _explain.text = "NULL";
         else _explain.text = data.Explain;
 
         if (data.Example == null) _example.text = "NULL";
         else _example.text = data.Example;
+
+        _audio = data.Audio;
+    }
+
+    public void PlayAudio()
+    {
+        Debug.Log(_audio);
     }
 }
