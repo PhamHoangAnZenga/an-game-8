@@ -14,7 +14,7 @@ public class SceneController : MonoBehaviour
     List<ButtonElement> _item = new List<ButtonElement>();
 
     int _startID;
-    
+
     void Awake()
     {
         Core.Init();
@@ -46,11 +46,11 @@ public class SceneController : MonoBehaviour
         _startID = Mathf.Max(0, _startID - _batchSize);
         UpdateData();
     }
-    
-    private void UpdateData(){
+
+    private void UpdateData() {
         for (int i = 0; i < _batchSize; ++i)
         {
-            _item[i].SetData(i+1 + _startID, _datas[i + _startID], _audioSource);
-        }        
+            _item[i].SetData(i + 1 + _startID, _datas[i + _startID], _audioSource);
+        }
     }
 }

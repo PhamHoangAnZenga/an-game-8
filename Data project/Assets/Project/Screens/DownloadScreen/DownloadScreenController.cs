@@ -23,8 +23,6 @@ public class DownloadScreenController : MonoBehaviour, IKeyBack
 
     void Update()
     {
-        Debug.Log("on downloading...");
-
         if (_timer > _timerDelay)
         {
             _loadingText.text = TEXT.Substring(0, TEXT.Count() - 3 + _index);
@@ -33,11 +31,14 @@ public class DownloadScreenController : MonoBehaviour, IKeyBack
         }
         _timer += Time.deltaTime;
     }
-
     
-    public async Task<bool>  DownloadAudio(string url, ButtonElement buttonElement)
+    public async Task<bool>  DownloadAudio(string url, string savePath)
     {
-        UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG);
+        using UnityWebRequest request = UnityWebRequest.Get(url);
+
+        Debug.Log("Start Download: " + url);
+
+        _ = request.SendWebRequest();
 
         while (!request.isDone)
         {
@@ -47,19 +48,19 @@ public class DownloadScreenController : MonoBehaviour, IKeyBack
         if (request.result != UnityWebRequest.Result.Success)
         {
             Debug.Log("cannot download");
+            Core.Close();
             return false;
         }
 
-        buttonElement.SetAudio( DownloadHandlerAudioClip.GetContent(request) );
-
-        SaveFile(request.downloadHandler.data);
-
+        Debug.Log("download success");
+        await SaveFile(request.downloadHandler.data, savePath);
         Core.Close();
-        return true;        
+        return true;
     }
 
-    async void SaveFile(byte[] audioData)
+    async Task SaveFile(byte[] audioData, string savePath)
     {
-        await File.WriteAllBytesAsync(Application.persistentDataPath, audioData);        
+        await File.WriteAllBytesAsync(savePath, audioData);
+        Debug.Log("save file success");     
     }
 }

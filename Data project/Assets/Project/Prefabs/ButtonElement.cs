@@ -37,7 +37,8 @@ public class ButtonElement : MonoBehaviour
         _audio = data.Audio;
         _audioSource = audioSource;
 
-        _fileName = $"{_audio}.mp3";
+        // _fileName = $"{_audio}.mp3";
+        _fileName = "agreement.mp3";
     }
 
     public void SetAudio(AudioClip audioClip)
@@ -59,22 +60,22 @@ public class ButtonElement : MonoBehaviour
 
             if (!File.Exists(savePath))
             {
-                if (await DownloadAudio() == false)
+                if (await DownloadAudio(savePath) == false)
                 {
                     return;
                 }
             }
-            else
+
+            if(await LoadLocalAudio(savePath) == false)
             {
-                _audioClip = DownloadHandlerAudioClip.GetContent(UnityWebRequestMultimedia.GetAudioClip(savePath, AudioType.MPEG));
+                return;
             }
-            
         }
         
         _audioSource.PlayOneShot(_audioClip);
     }
 
-    async Task<bool> DownloadAudio()
+    async Task<bool> DownloadAudio(string savePath)
     {
         string url = Path.Combine(URL, _fileName);
 
@@ -84,14 +85,31 @@ public class ButtonElement : MonoBehaviour
             screenName: "DownloadScreen",
             onScreenLoad: screen => downloadScreen = screen);
 
-        if (downloadScreen == null)
+        bool result = await downloadScreen.DownloadAudio(url, savePath);
+
+        return result;
+    }
+
+    async Task<bool> LoadLocalAudio(string savePath)
+    {
+        string url = "file://" + savePath;
+
+        using UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG);
+
+        _ = request.SendWebRequest();
+
+        while (!request.isDone)
         {
-            Debug.LogError("DownloadScreen was not loaded.");
+            await Task.Yield();
+        }
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log("cannot load file");
             return false;
         }
 
-        bool result = await downloadScreen.DownloadAudio(url, this);
-
-        return result;
+        _audioClip = DownloadHandlerAudioClip.GetContent(request);
+        return true;
     }
 }
