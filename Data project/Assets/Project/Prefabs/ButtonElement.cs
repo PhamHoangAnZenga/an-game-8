@@ -1,5 +1,6 @@
 using System.IO;
 using System.Threading.Tasks;
+using SS.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -39,6 +40,11 @@ public class ButtonElement : MonoBehaviour
         _fileName = $"{_audio}.mp3";
     }
 
+    public void SetAudio(AudioClip audioClip)
+    {
+        _audioClip = audioClip;
+    }
+
     public void OnButtonClick()
     {
         Debug.Log(_audio);
@@ -53,7 +59,7 @@ public class ButtonElement : MonoBehaviour
 
             if (!File.Exists(savePath))
             {
-                if (await DownloadAudio(savePath) == false)
+                if (await DownloadAudio() == false)
                 {
                     return;
                 }
@@ -68,31 +74,24 @@ public class ButtonElement : MonoBehaviour
         _audioSource.PlayOneShot(_audioClip);
     }
 
-    async Task<bool> DownloadAudio(string savePath)
+    async Task<bool> DownloadAudio()
     {
         string url = Path.Combine(URL, _fileName);
-        UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG);
 
-        while (!request.isDone)
-        {
-            await Task.Yield();
-        }
+        DownloadScreenController downloadScreen = null;
 
-        if (request.result != UnityWebRequest.Result.Success)
+        Core.Add<DownloadScreenController>(
+            screenName: "DownloadScreen",
+            onScreenLoad: screen => downloadScreen = screen);
+
+        if (downloadScreen == null)
         {
-            Debug.Log("cannot download");
+            Debug.LogError("DownloadScreen was not loaded.");
             return false;
         }
 
-        _audioClip = DownloadHandlerAudioClip.GetContent(request);
+        bool result = await downloadScreen.DownloadAudio(url, this);
 
-        SaveFile(request.downloadHandler.data);
-        
-        return true;
-    }
-
-    async void SaveFile(byte[] audioData)
-    {
-        await File.WriteAllBytesAsync(Application.persistentDataPath, audioData);        
+        return result;
     }
 }

@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49251d8c981de486b957174c165887e5, type: 3}
-  m_Name: LoadScreen
+  m_Name: DownloadScreen
   m_EditorClassIdentifier: 
-  _screenPrefab: {fileID: 3387652934893700365, guid: 615134e4fe1ab4b88b2db1dac4ac30e0, type: 3}
+  _screenPrefab: {fileID: 3387652934893700365, guid: fac84fe7cf7ee40468acdaff90ad0c4f, type: 3}

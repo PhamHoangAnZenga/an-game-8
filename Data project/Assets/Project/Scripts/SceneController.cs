@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SS.UI;
 using UnityEngine;
 
 public class SceneController : MonoBehaviour
@@ -13,6 +14,11 @@ public class SceneController : MonoBehaviour
     List<ButtonElement> _item = new List<ButtonElement>();
 
     int _startID;
+    
+    void Awake()
+    {
+        Core.Init();
+    }
 
     void Start()
     {
