@@ -952,7 +952,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: -5360897743842754220}
         m_TargetAssemblyTypeName: ButtonElement, Assembly-CSharp
-        m_MethodName: PlayAudio
+        m_MethodName: OnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

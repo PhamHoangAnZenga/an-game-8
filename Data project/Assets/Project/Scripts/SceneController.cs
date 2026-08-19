@@ -7,6 +7,7 @@ public class SceneController : MonoBehaviour
 
     [SerializeField] ButtonElement _buttonPrefab;
     [SerializeField] Transform _container;
+    [SerializeField] AudioSource _audioSource;
 
     List<VocabularyItem> _datas = new List<VocabularyItem>();
     List<ButtonElement> _item = new List<ButtonElement>();
@@ -24,7 +25,7 @@ public class SceneController : MonoBehaviour
         for (int i = 0; i < _batchSize; ++i)
         {
             _item.Add( Instantiate(_buttonPrefab, _container) ); 
-            _item[i].SetData(i+1, _datas[i]);
+            _item[i].SetData(i+1, _datas[i], _audioSource);
         }
     }
 
@@ -43,7 +44,7 @@ public class SceneController : MonoBehaviour
     private void UpdateData(){
         for (int i = 0; i < _batchSize; ++i)
         {
-            _item[i].SetData(i+1 + _startID, _datas[i + _startID]);
+            _item[i].SetData(i+1 + _startID, _datas[i + _startID], _audioSource);
         }        
     }
 }
